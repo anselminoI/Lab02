@@ -1,12 +1,37 @@
 def carica_da_file(file_path):
-    """Carica i libri dal file"""
-    # TODO
-
+    try:
+        infile = open(file_path, "r", encoding="utf-8")
+        num_sezione = infile.readline()
+        elenco_libri = []
+        for line in infile:
+            line = line.strip().split(",")
+            libro = {
+                "num_sezione": num_sezione,
+                "titolo": line[0],
+                "autore": line[1],
+                "anno": line[2],
+                "pagine": line[3],
+                "sez": line[4]
+            }
+            elenco_libri.append(libro)
+        return elenco_libri
+    except FileNotFoundError:
+        print("Il path inserito non esiste")
+        return None
 
 def aggiungi_libro(biblioteca, titolo, autore, anno, pagine, sezione, file_path):
-    """Aggiunge un libro nella biblioteca"""
-    # TODO
-
+    try:
+        libro = {
+            "titolo": titolo,
+            "autore": autore,
+            "anno": anno,
+            "pagine": pagine,
+            "sez": sezione
+        }
+        biblioteca.append(libro)
+        return biblioteca
+    except FileNotFoundError:
+        print("il path del file che hai inserito non esiste")
 
 def cerca_libro(biblioteca, titolo):
     """Cerca un libro nella biblioteca dato il titolo"""
@@ -20,7 +45,7 @@ def elenco_libri_sezione_per_titolo(biblioteca, sezione):
 
 def main():
     biblioteca = []
-    file_path = "biblioteca.csv"
+    file_path = "biblioteca.csv"  # gestisci sta roba
 
     while True:
         print("\n--- MENU BIBLIOTECA ---")
@@ -57,6 +82,7 @@ def main():
             libro = aggiungi_libro(biblioteca, titolo, autore, anno, pagine, sezione, file_path)
             if libro:
                 print(f"Libro aggiunto con successo!")
+                print(libro)
             else:
                 print("Non è stato possibile aggiungere il libro.")
 
@@ -97,4 +123,6 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
 
