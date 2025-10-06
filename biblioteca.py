@@ -50,9 +50,6 @@ def elenco_libri_sezione_per_titolo(biblioteca, sezione):
         if int(oggetto["sez"]) == sezione and int(oggetto["num_sezione"])> sezione:
             titolo = oggetto["titolo"]
             lista.append(titolo)
-        else:
-            return None
-
     lista_ordinata = sorted(lista)
     return lista_ordinata
 
