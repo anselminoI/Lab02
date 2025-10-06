@@ -22,20 +22,27 @@ def carica_da_file(file_path):
 def aggiungi_libro(biblioteca, titolo, autore, anno, pagine, sezione, file_path):
     try:
         for oggetto in biblioteca:
-            if oggetto["titolo"] != titolo or int(oggetto["num_sezione"])<= sezione:
-                libro = {
-                        "titolo": titolo,
-                        "autore": autore,
-                        "anno": anno,
-                        "pagine": pagine,
-                        "sez": sezione
-                }
-                biblioteca.append(libro)
-                return biblioteca
-            else:
+            if oggetto["titolo"] == titolo:
+                print("Errore: esiste già un libro con questo titolo.")
                 return None
+        libro = {
+            "titolo": titolo,
+            "autore": autore,
+            "anno": anno,
+            "pagine": pagine,
+            "sez": sezione
+        }
+
+        biblioteca.append(libro)
+
+        outfile = open(file_path, "a", encoding="utf-8")
+        outfile.write(f"{titolo}, {autore}, {anno}, {pagine}, {sezione} \n")
+        outfile.close()
+
+        return biblioteca
+
     except FileNotFoundError:
-        print("il path del file che hai inserito non esiste")
+        print("Il path del file che hai inserito non esiste.")
 
 def cerca_libro(biblioteca, titolo):
     for oggetto in biblioteca:
@@ -47,7 +54,7 @@ def elenco_libri_sezione_per_titolo(biblioteca, sezione):
     lista = []
 
     for oggetto in biblioteca:
-        if int(oggetto["sez"]) == sezione and int(oggetto["num_sezione"])> sezione:
+        if int(oggetto["sez"]) == sezione and int(oggetto["num_sezione"])>= sezione:
             titolo = oggetto["titolo"]
             lista.append(titolo)
     lista_ordinata = sorted(lista)
@@ -94,7 +101,6 @@ def main():
             if libro:
                 print(f"Libro aggiunto con successo!")
                 print(f'Titolo: {titolo}, Autore: {autore}')
-                print(libro)
             else:
                 print("Non è stato possibile aggiungere il libro.")
 
@@ -135,6 +141,5 @@ def main():
 
 if __name__ == "__main__":
     main()
-
 
 
