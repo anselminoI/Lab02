@@ -21,27 +21,40 @@ def carica_da_file(file_path):
 
 def aggiungi_libro(biblioteca, titolo, autore, anno, pagine, sezione, file_path):
     try:
-        libro = {
-            "titolo": titolo,
-            "autore": autore,
-            "anno": anno,
-            "pagine": pagine,
-            "sez": sezione
-        }
-        biblioteca.append(libro)
-        return biblioteca
+        for oggetto in biblioteca:
+            if oggetto["titolo"] != titolo or int(oggetto["num_sezione"])<= sezione:
+                libro = {
+                        "titolo": titolo,
+                        "autore": autore,
+                        "anno": anno,
+                        "pagine": pagine,
+                        "sez": sezione
+                }
+                biblioteca.append(libro)
+                return biblioteca
+            else:
+                return None
     except FileNotFoundError:
         print("il path del file che hai inserito non esiste")
 
 def cerca_libro(biblioteca, titolo):
-    """Cerca un libro nella biblioteca dato il titolo"""
-    # TODO
-
+    for oggetto in biblioteca:
+        if oggetto["titolo"] == titolo:
+            risultato = (f"{titolo}, {oggetto["autore"]}, {oggetto["anno"]}, {oggetto["pagine"]}, {oggetto["sez"]}")
+            return risultato
 
 def elenco_libri_sezione_per_titolo(biblioteca, sezione):
-    """Ordina i titoli di una data sezione della biblioteca in ordine alfabetico"""
-    # TODO
+    lista = []
 
+    for oggetto in biblioteca:
+        if int(oggetto["sez"]) == sezione and int(oggetto["num_sezione"])> sezione:
+            titolo = oggetto["titolo"]
+            lista.append(titolo)
+        else:
+            return None
+
+    lista_ordinata = sorted(lista)
+    return lista_ordinata
 
 def main():
     biblioteca = []
@@ -80,8 +93,10 @@ def main():
                 continue
 
             libro = aggiungi_libro(biblioteca, titolo, autore, anno, pagine, sezione, file_path)
+
             if libro:
                 print(f"Libro aggiunto con successo!")
+                print(f'Titolo: {titolo}, Autore: {autore}')
                 print(libro)
             else:
                 print("Non è stato possibile aggiungere il libro.")
